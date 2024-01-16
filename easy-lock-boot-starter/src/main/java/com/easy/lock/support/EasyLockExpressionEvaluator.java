@@ -25,7 +25,7 @@ public class EasyLockExpressionEvaluator extends CachedExpressionEvaluator {
 
     private final Map<AnnotatedElementKey, Method> targetMethodCache = new ConcurrentHashMap<>(64);
     private final Map<ExpressionKey, Expression> expressionCache = new ConcurrentHashMap<>(64);
-    private final TemplateParserContext templateParserContext = new TemplateParserContext();
+    private final TemplateParserContext templateParserContext = new TemplateParserContext("{{", "}}");
 
     public String parseExpression(String conditionExpression, AnnotatedElementKey methodKey, EvaluationContext evalContext) {
         return getExpression(this.expressionCache, methodKey, conditionExpression).getValue(evalContext, String.class);
