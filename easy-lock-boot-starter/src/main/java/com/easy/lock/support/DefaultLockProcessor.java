@@ -1,7 +1,6 @@
 package com.easy.lock.support;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.stereotype.Component;
 
 /**
  * <p> Lock 单机实现(没有锁的过期时间) </p>
@@ -9,8 +8,9 @@ import org.springframework.stereotype.Component;
  * @author zhouhongyin
  * @since 2023/12/21 10:59
  */
-@Component
 public class DefaultLockProcessor implements LockProcessor {
+
+    public static final String BEAN_NAME = "defaultLockProcessor";
 
     @Override
     public Object proceed(MethodInvocation invocation, String key, long leaseTime) throws Throwable {

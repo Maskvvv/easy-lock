@@ -1,6 +1,7 @@
 package com.easy.lock.annotation;
 
 
+import com.easy.lock.support.DefaultLockProcessor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 
@@ -18,6 +19,8 @@ public class EasyLockProperties {
     private String keySeparator = ":";
 
     private long leaseTime = 30 * 1000;
+
+    private String defaultLockProcessorBeanName = DefaultLockProcessor.BEAN_NAME;
 
     public String getPrefix() {
         return prefix;
@@ -41,5 +44,13 @@ public class EasyLockProperties {
 
     public void setLeaseTime(long leaseTime) {
         this.leaseTime = leaseTime;
+    }
+
+    public String getDefaultLockProcessorBeanName() {
+        return defaultLockProcessorBeanName;
+    }
+
+    public void setDefaultLockProcessorBeanName(String defaultLockProcessorBeanName) {
+        this.defaultLockProcessorBeanName = defaultLockProcessorBeanName;
     }
 }

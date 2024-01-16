@@ -153,7 +153,7 @@ public class EasyLockInterceptor implements BeanFactoryInterceptor, Serializable
 
         this.easyLockValueParser = beanFactory.getBean(EasyLockValueParser.class);
 
-        this.defaultLockProcessor = beanFactory.getBean(LockProcessor.class);
+        this.defaultLockProcessor = beanFactory.getBean(this.easyLockProperties.getDefaultLockProcessorBeanName(), LockProcessor.class);
 
         if (beanFactory instanceof ListableBeanFactory) {
             ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;

@@ -69,7 +69,7 @@ public class EasyLockProxyAutoConfiguration implements ImportAware {
     }
 
 
-    @Bean
+    @Bean(DefaultLockProcessor.BEAN_NAME)
     @Role(BeanDefinition.ROLE_APPLICATION)
     public LockProcessor lockProcessor() {
         return new DefaultLockProcessor();
