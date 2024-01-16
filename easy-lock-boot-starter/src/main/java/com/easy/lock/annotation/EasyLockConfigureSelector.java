@@ -18,9 +18,9 @@ public class EasyLockConfigureSelector extends AdviceModeImportSelector<EnableEa
     public String[] selectImports(AdviceMode adviceMode) {
         switch (adviceMode) {
             case PROXY:
-                return new String[]{AutoProxyRegistrar.class.getName(), LogRecordProxyAutoConfiguration.class.getName()};
+                return new String[]{AutoProxyRegistrar.class.getName(), EasyLockProxyAutoConfiguration.class.getName()};
             case ASPECTJ:
-                return new String[] {LogRecordProxyAutoConfiguration.class.getName()};
+                return new String[] {EasyLockProxyAutoConfiguration.class.getName()};
             default:
                 return null;
         }
