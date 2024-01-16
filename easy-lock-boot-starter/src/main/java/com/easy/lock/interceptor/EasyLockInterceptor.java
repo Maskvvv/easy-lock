@@ -3,26 +3,24 @@ package com.easy.lock.interceptor;
 
 import com.easy.lock.annotation.EasyLockAttribute;
 import com.easy.lock.annotation.EasyLockOperationSource;
-import com.easy.lock.support.EasyLockEvaluationContextPostProcessor;
+import com.easy.lock.annotation.EasyLockProperties;
+import com.easy.lock.support.EasyLockValueParser;
+import com.easy.lock.support.KeyConvert;
 import com.easy.lock.support.LockProcessor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.lang.Nullable;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <p>  </p>
@@ -30,17 +28,23 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author zhouhongyin
  * @since 2024/1/15 13:58
  */
-public class EasyLockInterceptor implements BeanFactoryInterceptor, Serializable, ApplicationContextAware {
+public class EasyLockInterceptor implements BeanFactoryInterceptor, Serializable {
+
+    private final Log logger = LogFactory.getLog(getClass());
+
+    private EasyLockProperties easyLockProperties;
 
     private EasyLockOperationSource easyLockOperationSource;
 
-
-    @Nullable
     private BeanFactory beanFactory;
 
-    private Map<Class<?>, LockProcessor> lockProcessors = new ConcurrentHashMap<>();
+    private EasyLockValueParser easyLockValueParser;
 
-    private List<EasyLockEvaluationContextPostProcessor> easyLockEvaluationContextPostProcessors = new CopyOnWriteArrayList<>();
+    private final Map<Class<?>, LockProcessor> lockProcessorMap = new ConcurrentHashMap<>();
+
+    private LockProcessor defaultLockProcessor;
+
+    private final Map<Class<?>, KeyConvert> keyConvertMap = new ConcurrentHashMap<>();
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
@@ -53,60 +57,80 @@ public class EasyLockInterceptor implements BeanFactoryInterceptor, Serializable
         if (AopUtils.isAopProxy(target)) {
             return invoker.proceed();
         }
-
         Class<?> targetClass = getTargetClass(target);
-        Object ret = null;
 
-        Map<String, String> functionNameAndReturnMap = new HashMap<>();
-        try {
-            EasyLockAttribute easyLockAttribute = easyLockOperationSource.computeEasyLockOperations(method, targetClass);
+        EasyLockAttribute easyLockAttribute = easyLockOperationSource.computeEasyLockOperations(method, targetClass);
+        evaluateEasyLockAttribute(easyLockAttribute, easyLockProperties);
 
+        String lockKey = createLockKey(easyLockAttribute, method, args, targetClass);
 
-
-
-
-            operations = logRecordOperationSource.computeLogRecordOperations(method, targetClass);
-            List<String> spElTemplates = getBeforeExecuteFunctionTemplate(operations);
-            functionNameAndReturnMap = processBeforeExecuteFunctionTemplate(spElTemplates, targetClass, method, args);
-        } catch (Exception e) {
-            log.error("log record parse before function exception", e);
-        } finally {
-            stopWatch.stop();
-        }
-
-        try {
-            ret = invoker.proceed();
-            methodExecuteResult.setResult(ret);
-            methodExecuteResult.setSuccess(true);
-        } catch (Exception e) {
-            methodExecuteResult.setSuccess(false);
-            methodExecuteResult.setThrowable(e);
-            methodExecuteResult.setErrorMsg(e.getMessage());
-        }
-        stopWatch.start(MONITOR_TASK_AFTER_EXECUTE);
-        try {
-            if (!CollectionUtils.isEmpty(operations)) {
-                recordExecute(methodExecuteResult, functionNameAndReturnMap, operations);
-            }
-        } catch (Exception t) {
-            log.error("log record parse exception", t);
-            throw t;
-        } finally {
-            LogRecordContext.clear();
-            stopWatch.stop();
-            try {
-                logRecordPerformanceMonitor.print(stopWatch);
-            } catch (Exception e) {
-                log.error("execute exception", e);
-            }
-        }
-
-        if (methodExecuteResult.getThrowable() != null) {
-            throw methodExecuteResult.getThrowable();
-        }
-        return ret;
+        return lockProcessorMap.get(easyLockAttribute.getLockProcessor()).proceed(invoker, lockKey, easyLockAttribute.getLeaseTime());
     }
 
+    private void evaluateEasyLockAttribute(EasyLockAttribute easyLockAttribute, EasyLockProperties easyLockProperties) {
+        String prefix = easyLockAttribute.getPrefix();
+        if (!StringUtils.hasText(prefix)) {
+            easyLockAttribute.setPrefix(easyLockProperties.getPrefix());
+        }
+
+        String keySeparator = easyLockAttribute.getKeySeparator();
+        if (!StringUtils.hasText(keySeparator)) {
+            easyLockAttribute.setKeySeparator(easyLockProperties.getKeySeparator());
+        }
+
+        long leaseTime = easyLockAttribute.getLeaseTime();
+        if (leaseTime < 0) {
+            easyLockAttribute.setLeaseTime(easyLockProperties.getLeaseTime());
+        }
+
+        Class<? extends LockProcessor> lockProcessor = easyLockAttribute.getLockProcessor();
+        if (lockProcessor == null) {
+            easyLockAttribute.setLockProcessor(defaultLockProcessor.getClass());
+        }
+
+    }
+
+    private String createLockKey(EasyLockAttribute easyLockAttribute, Method method, Object[] args, Class<?> targetClass) {
+
+        String prefix = easyLockAttribute.getPrefix();
+        String convertKey = parserKeyConvert(easyLockAttribute.getKeyConvert(), args);
+        String spELKey = parserSpEL(easyLockAttribute.getSpEl(), method, args, targetClass);
+        return keyJoin(easyLockAttribute.getKeySeparator(), prefix, convertKey, spELKey);
+    }
+
+    private String parserKeyConvert(Class<? extends KeyConvert> clazz, Object[] args) {
+        if (clazz == null) {
+            return "";
+        }
+        KeyConvert keyConvert = keyConvertMap.get(clazz);
+        return keyConvert.getKey(args);
+    }
+
+    private String parserSpEL(String expression, Method method, Object[] args, Class<?> targetClass) {
+        if (!StringUtils.hasText(expression)) {
+            return "";
+        }
+
+        return easyLockValueParser.processExpression(expression, method, args, targetClass);
+    }
+
+    private String keyJoin(String delimiter, String... keys) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < keys.length; i++) {
+            String k = keys[i];
+            if (StringUtils.hasText(k)) {
+                stringBuilder.append(k).append(delimiter);
+            }
+        }
+
+        if (stringBuilder.length() > 1) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            return stringBuilder.toString();
+        }
+
+        throw new RuntimeException("lock key is null!");
+    }
 
     private Class<?> getTargetClass(Object target) {
         return AopProxyUtils.ultimateTargetClass(target);
@@ -124,23 +148,25 @@ public class EasyLockInterceptor implements BeanFactoryInterceptor, Serializable
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterSingletonsInstantiated() {
+        this.easyLockProperties = beanFactory.getBean(EasyLockProperties.class);
+
+        this.easyLockValueParser = beanFactory.getBean(EasyLockValueParser.class);
+
+        this.defaultLockProcessor = beanFactory.getBean(LockProcessor.class);
 
         if (beanFactory instanceof ListableBeanFactory) {
-            ListableBeanFactory defaultBeanFactory = (ListableBeanFactory) beanFactory;
-            Map<String, LockProcessor> beansOfType = defaultBeanFactory.getBeansOfType(LockProcessor.class);
-            for (LockProcessor lockProcessor : beansOfType.values()) {
+            ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
 
-
-
+            Map<String, LockProcessor> lockProcessors = listableBeanFactory.getBeansOfType(LockProcessor.class);
+            for (LockProcessor lockProcessor : lockProcessors.values()) {
+                this.lockProcessorMap.put(lockProcessor.getClass(), lockProcessor);
             }
 
+            Map<String, KeyConvert> keyConverts = listableBeanFactory.getBeansOfType(KeyConvert.class);
+            for (KeyConvert keyConvert : keyConverts.values()) {
+                this.keyConvertMap.put(keyConvert.getClass(), keyConvert);
+            }
         }
-
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        applicationContext.
     }
 }

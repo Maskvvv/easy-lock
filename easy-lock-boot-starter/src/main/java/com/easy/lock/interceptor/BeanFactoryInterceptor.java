@@ -2,7 +2,7 @@ package com.easy.lock.interceptor;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 
 /**
  * <p> </p>
@@ -10,6 +10,6 @@ import org.springframework.beans.factory.InitializingBean;
  * @author zhouhongyin
  * @since 2024/1/15 16:51
  */
-public interface BeanFactoryInterceptor extends MethodInterceptor, BeanFactoryAware, InitializingBean {
+public interface BeanFactoryInterceptor extends MethodInterceptor, BeanFactoryAware, SmartInitializingSingleton {
 
 }

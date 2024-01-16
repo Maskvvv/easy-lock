@@ -16,7 +16,6 @@ import java.lang.reflect.Modifier;
  */
 public class EasyLockOperationSource {
 
-
     public EasyLockAttribute computeEasyLockOperations(Method method, Class<?> targetClass) {
         // Don't allow no-public methods as required.
         if (!Modifier.isPublic(method.getModifiers())) {
@@ -40,15 +39,17 @@ public class EasyLockOperationSource {
         if (easyLock != null) {
             EasyLockAttribute easyLockAttribute = EasyLockAttribute.builder()
                     .prefix(easyLock.prefix())
-                    .keyConvert(easyLock.keyConvert())
+                    .keyConvert(easyLock.keyConvert().length > 0 ? easyLock.keyConvert()[0] : null)
                     .spEl(easyLock.spEl())
                     .keySeparator(easyLock.keySeparator())
                     .leaseTime(easyLock.leaseTime())
-                    .lockProcessor(easyLock.lockProcessor())
+                    .lockProcessor(easyLock.lockProcessor().length > 0 ? easyLock.lockProcessor()[0] : null)
                     .build();
             return easyLockAttribute;
         }
         return null;
     }
+
+
 
 }

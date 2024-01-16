@@ -13,7 +13,7 @@ public class EasyLockAttribute {
 
     private String prefix;
 
-    private Class<? extends KeyConvert>[] keyConvert;
+    private Class<? extends KeyConvert> keyConvert;
 
     private String spEl;
 
@@ -21,21 +21,26 @@ public class EasyLockAttribute {
 
     private long leaseTime;
 
-    private Class<? extends LockProcessor>[] lockProcessor;
+    private Class<? extends LockProcessor> lockProcessor;
 
     public static Builder builder() {
         return new Builder();
     }
 
+
     public static final class Builder {
         private String prefix;
-        private Class<? extends KeyConvert>[] keyConvert;
+        private Class<? extends KeyConvert> keyConvert;
         private String spEl;
         private String keySeparator;
         private long leaseTime;
-        private Class<? extends LockProcessor>[] lockProcessor;
+        private Class<? extends LockProcessor> lockProcessor;
 
         private Builder() {
+        }
+
+        public static Builder anEasyLockAttribute() {
+            return new Builder();
         }
 
         public Builder prefix(String prefix) {
@@ -43,7 +48,7 @@ public class EasyLockAttribute {
             return this;
         }
 
-        public Builder keyConvert(Class<? extends KeyConvert>[] keyConvert) {
+        public Builder keyConvert(Class<? extends KeyConvert> keyConvert) {
             this.keyConvert = keyConvert;
             return this;
         }
@@ -63,20 +68,68 @@ public class EasyLockAttribute {
             return this;
         }
 
-        public Builder lockProcessor(Class<? extends LockProcessor>[] lockProcessor) {
+        public Builder lockProcessor(Class<? extends LockProcessor> lockProcessor) {
             this.lockProcessor = lockProcessor;
             return this;
         }
 
         public EasyLockAttribute build() {
             EasyLockAttribute easyLockAttribute = new EasyLockAttribute();
+            easyLockAttribute.spEl = this.spEl;
             easyLockAttribute.lockProcessor = this.lockProcessor;
+            easyLockAttribute.leaseTime = this.leaseTime;
+            easyLockAttribute.keySeparator = this.keySeparator;
             easyLockAttribute.prefix = this.prefix;
             easyLockAttribute.keyConvert = this.keyConvert;
-            easyLockAttribute.keySeparator = this.keySeparator;
-            easyLockAttribute.leaseTime = this.leaseTime;
-            easyLockAttribute.spEl = this.spEl;
             return easyLockAttribute;
         }
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public Class<? extends KeyConvert> getKeyConvert() {
+        return keyConvert;
+    }
+
+    public void setKeyConvert(Class<? extends KeyConvert> keyConvert) {
+        this.keyConvert = keyConvert;
+    }
+
+    public String getSpEl() {
+        return spEl;
+    }
+
+    public void setSpEl(String spEl) {
+        this.spEl = spEl;
+    }
+
+    public String getKeySeparator() {
+        return keySeparator;
+    }
+
+    public void setKeySeparator(String keySeparator) {
+        this.keySeparator = keySeparator;
+    }
+
+    public long getLeaseTime() {
+        return leaseTime;
+    }
+
+    public void setLeaseTime(long leaseTime) {
+        this.leaseTime = leaseTime;
+    }
+
+    public Class<? extends LockProcessor> getLockProcessor() {
+        return lockProcessor;
+    }
+
+    public void setLockProcessor(Class<? extends LockProcessor> lockProcessor) {
+        this.lockProcessor = lockProcessor;
     }
 }

@@ -34,7 +34,6 @@ public class EasyLockValueParser implements BeanFactoryAware {
 
         AnnotatedElementKey annotatedElementKey = new AnnotatedElementKey(method, targetClass);
 
-
         return expressionEvaluator.parseExpression(expression, annotatedElementKey, evaluationContext);
     }
 

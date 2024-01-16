@@ -10,7 +10,6 @@ import com.easy.lock.support.LockProcessor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,16 +37,16 @@ public class EasyLockProxyAutoConfiguration implements ImportAware {
 
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public EasyLockOperationSource logRecordOperationSource() {
+    public EasyLockOperationSource easyLockOperationSource() {
         return new EasyLockOperationSource();
     }
 
 
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public BeanFactoryEasyLockAdvisor easyLockAdvisor(EasyLockProperties easyLockProperties) {
+    public BeanFactoryEasyLockAdvisor easyLockAdvisor() {
         BeanFactoryEasyLockAdvisor advisor = new BeanFactoryEasyLockAdvisor();
-        advisor.setEasyLockOperationSource(logRecordOperationSource());
+        advisor.setEasyLockOperationSource(easyLockOperationSource());
         advisor.setAdvice(easyLockInterceptor());
         advisor.setOrder(enableEasyLock.getNumber("order"));
         return advisor;
@@ -57,7 +56,7 @@ public class EasyLockProxyAutoConfiguration implements ImportAware {
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public EasyLockInterceptor easyLockInterceptor() {
         EasyLockInterceptor interceptor = new EasyLockInterceptor();
-        interceptor.setEasyLockOperationSource(logRecordOperationSource());
+        interceptor.setEasyLockOperationSource(easyLockOperationSource());
         return interceptor;
     }
 
@@ -71,7 +70,6 @@ public class EasyLockProxyAutoConfiguration implements ImportAware {
 
 
     @Bean
-    @ConditionalOnMissingBean(LockProcessor.class)
     @Role(BeanDefinition.ROLE_APPLICATION)
     public LockProcessor lockProcessor() {
         return new DefaultLockProcessor();
