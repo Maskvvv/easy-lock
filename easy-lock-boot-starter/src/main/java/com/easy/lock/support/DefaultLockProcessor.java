@@ -1,5 +1,6 @@
 package com.easy.lock.support;
 
+import com.easy.lock.core.LockProcessor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -13,7 +14,7 @@ public class DefaultLockProcessor implements LockProcessor {
     public static final String BEAN_NAME = "defaultLockProcessor";
 
     @Override
-    public Object proceed(MethodInvocation invocation, String key, long leaseTime) throws Throwable {
+    public Object proceed(MethodInvocation invocation, String key, String leaseTime) throws Throwable {
         synchronized (key.intern()) {
             return invocation.proceed();
         }

@@ -1,7 +1,7 @@
 package com.easy.lock.annotation;
 
+import com.easy.lock.core.LockProcessor;
 import com.easy.lock.support.KeyConvert;
-import com.easy.lock.support.LockProcessor;
 
 /**
  * <p> </p>
@@ -19,7 +19,7 @@ public class EasyLockAttribute {
 
     private String keySeparator;
 
-    private long leaseTime;
+    private String leaseTime;
 
     private Class<? extends LockProcessor> lockProcessor;
 
@@ -33,7 +33,7 @@ public class EasyLockAttribute {
         private Class<? extends KeyConvert> keyConvert;
         private String spEl;
         private String keySeparator;
-        private long leaseTime;
+        private String leaseTime;
         private Class<? extends LockProcessor> lockProcessor;
 
         private Builder() {
@@ -63,7 +63,7 @@ public class EasyLockAttribute {
             return this;
         }
 
-        public Builder leaseTime(long leaseTime) {
+        public Builder leaseTime(String leaseTime) {
             this.leaseTime = leaseTime;
             return this;
         }
@@ -117,11 +117,11 @@ public class EasyLockAttribute {
         this.keySeparator = keySeparator;
     }
 
-    public long getLeaseTime() {
+    public String getLeaseTime() {
         return leaseTime;
     }
 
-    public void setLeaseTime(long leaseTime) {
+    public void setLeaseTime(String leaseTime) {
         this.leaseTime = leaseTime;
     }
 

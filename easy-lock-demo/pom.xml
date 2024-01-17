@@ -15,14 +15,19 @@
     <description>easy-lock-demo</description>
     <properties>
         <java.version>8</java.version>
-        <easy-lock.version>1.0.0</easy-lock.version>
     </properties>
     <dependencies>
 
         <dependency>
             <groupId>io.github.maskvvv</groupId>
             <artifactId>easy-lock-boot-starter</artifactId>
-            <version>${easy-lock.version}</version>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.maskvvv</groupId>
+            <artifactId>easy-lock-redisson</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>

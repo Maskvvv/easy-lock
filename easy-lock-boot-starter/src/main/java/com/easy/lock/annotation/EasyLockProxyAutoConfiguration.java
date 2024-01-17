@@ -1,12 +1,12 @@
 package com.easy.lock.annotation;
 
 
+import com.easy.lock.core.LockProcessor;
 import com.easy.lock.interceptor.BeanFactoryEasyLockAdvisor;
 import com.easy.lock.interceptor.EasyLockInterceptor;
 import com.easy.lock.support.DefaultLockProcessor;
 import com.easy.lock.support.EasyLockEvaluationContextPostProcessor;
 import com.easy.lock.support.EasyLockValueParser;
-import com.easy.lock.support.LockProcessor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.config.BeanDefinition;

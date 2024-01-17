@@ -1,7 +1,7 @@
 package com.easy.lock.annotation;
 
+import com.easy.lock.core.LockProcessor;
 import com.easy.lock.support.KeyConvert;
-import com.easy.lock.support.LockProcessor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,7 +24,7 @@ public @interface EasyLock {
 
     String keySeparator() default "";
 
-    long leaseTime() default -1;
+    String leaseTime() default "";
 
     Class<? extends LockProcessor>[] lockProcessor() default {};
 }

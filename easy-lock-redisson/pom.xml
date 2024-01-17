@@ -7,11 +7,15 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>easy-lock-boot-starter</artifactId>
-    <version>${easy-lock-boot-starter.version}</version>
+    <artifactId>easy-lock-redisson</artifactId>
+    <version>${easy-lock-redisson.version}</version>
     <packaging>jar</packaging>
 
-    <name>easy-lock-boot-starter</name>
+    <name>easy-lock-redisson</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -19,5 +23,10 @@
             <artifactId>easy-lock-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.24.3</version>
+        </dependency>
     </dependencies>
 </project>

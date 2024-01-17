@@ -7,17 +7,20 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>easy-lock-boot-starter</artifactId>
-    <version>${easy-lock-boot-starter.version}</version>
+    <artifactId>easy-lock-core</artifactId>
+    <version>${easy-lock-core.version}</version>
     <packaging>jar</packaging>
 
-    <name>easy-lock-boot-starter</name>
+    <name>easy-lock-core</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>io.github.maskvvv</groupId>
-            <artifactId>easy-lock-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
     </dependencies>
 </project>

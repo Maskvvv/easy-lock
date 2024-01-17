@@ -13,6 +13,8 @@
 
     <modules>
         <module>easy-lock-boot-starter</module>
+        <module>easy-lock-redisson</module>
+        <module>easy-lock-core</module>
     </modules>
 
     <licenses>
@@ -42,6 +44,9 @@
     </scm>
 
     <properties>
+        <easy-lock-core.version>1.0.0</easy-lock-core.version>
+        <easy-lock-boot-starter.version>1.0.0</easy-lock-boot-starter.version>
+        <easy-lock-redisson.version>1.0.0</easy-lock-redisson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -55,12 +60,30 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>io.github.maskvvv</groupId>
+                <artifactId>easy-lock-core</artifactId>
+                <version>${easy-lock-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.maskvvv</groupId>
+                <artifactId>easy-lock-boot-starter</artifactId>
+                <version>${easy-lock-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.maskvvv</groupId>
+                <artifactId>easy-lock-redisson</artifactId>
+                <version>${easy-lock-redisson.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
 
         </dependencies>
+
+
     </dependencyManagement>
 
 

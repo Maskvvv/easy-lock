@@ -1,4 +1,4 @@
-package com.easy.lock.support;
+package com.easy.lock.core;
 
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -11,6 +11,6 @@ import org.aopalliance.intercept.MethodInvocation;
  */
 public interface LockProcessor {
 
-    Object proceed(MethodInvocation invocation, String key, long leaseTime) throws Throwable;
+    Object proceed(MethodInvocation invocation, String key, String leaseTime) throws Throwable;
 
 }

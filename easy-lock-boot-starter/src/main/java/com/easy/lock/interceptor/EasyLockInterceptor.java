@@ -4,9 +4,9 @@ package com.easy.lock.interceptor;
 import com.easy.lock.annotation.EasyLockAttribute;
 import com.easy.lock.annotation.EasyLockOperationSource;
 import com.easy.lock.annotation.EasyLockProperties;
+import com.easy.lock.core.LockProcessor;
 import com.easy.lock.support.EasyLockValueParser;
 import com.easy.lock.support.KeyConvert;
-import com.easy.lock.support.LockProcessor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * <p>  </p>
+ * <p> EasyLockInterceptor </p>
  *
  * @author zhouhongyin
  * @since 2024/1/15 13:58
@@ -78,8 +78,8 @@ public class EasyLockInterceptor implements BeanFactoryInterceptor, Serializable
             easyLockAttribute.setKeySeparator(easyLockProperties.getKeySeparator());
         }
 
-        long leaseTime = easyLockAttribute.getLeaseTime();
-        if (leaseTime < 0) {
+        String leaseTime = easyLockAttribute.getLeaseTime();
+        if (!StringUtils.hasText(leaseTime)) {
             easyLockAttribute.setLeaseTime(easyLockProperties.getLeaseTime());
         }
 

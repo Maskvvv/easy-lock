@@ -18,7 +18,7 @@ public class EasyLockProperties {
 
     private String keySeparator = ":";
 
-    private long leaseTime = 30 * 1000;
+    private String leaseTime = "-1";
 
     private String defaultLockProcessorBeanName = DefaultLockProcessor.BEAN_NAME;
 
@@ -38,11 +38,11 @@ public class EasyLockProperties {
         this.keySeparator = keySeparator;
     }
 
-    public long getLeaseTime() {
+    public String getLeaseTime() {
         return leaseTime;
     }
 
-    public void setLeaseTime(long leaseTime) {
+    public void setLeaseTime(String leaseTime) {
         this.leaseTime = leaseTime;
     }
 
