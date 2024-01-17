@@ -1,6 +1,6 @@
 package com.easy.lock.support;
 
-import com.easy.lock.core.LockProcessor;
+import com.easy.lock.core.support.LockProcessor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**

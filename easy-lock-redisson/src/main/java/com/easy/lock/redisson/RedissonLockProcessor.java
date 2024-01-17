@@ -1,6 +1,6 @@
 package com.easy.lock.redisson;
 
-import com.easy.lock.core.LockProcessor;
+import com.easy.lock.core.support.LockProcessor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;

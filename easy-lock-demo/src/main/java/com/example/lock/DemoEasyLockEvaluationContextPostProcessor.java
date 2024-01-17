@@ -1,6 +1,6 @@
 package com.example.lock;
 
-import com.easy.lock.support.EasyLockEvaluationContextPostProcessor;
+import com.easy.lock.core.support.EasyLockEvaluationContextPostProcessor;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 

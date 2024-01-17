@@ -1,4 +1,4 @@
-package com.easy.lock.support;
+package com.easy.lock.core.support;
 
 /**
  * <p> </p>

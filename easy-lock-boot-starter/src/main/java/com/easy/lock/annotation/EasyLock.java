@@ -1,7 +1,7 @@
 package com.easy.lock.annotation;
 
-import com.easy.lock.core.LockProcessor;
-import com.easy.lock.support.KeyConvert;
+import com.easy.lock.core.support.KeyConvert;
+import com.easy.lock.core.support.LockProcessor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

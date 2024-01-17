@@ -1,6 +1,6 @@
 package com.example.lock;
 
-import com.easy.lock.support.KeyConvert;
+import com.easy.lock.core.support.KeyConvert;
 import com.example.domain.DemoParam;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package com.easy.lock.redisson;
 
-import com.easy.lock.core.LockProcessor;
+import com.easy.lock.core.support.LockProcessor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.ClusterServersConfig;

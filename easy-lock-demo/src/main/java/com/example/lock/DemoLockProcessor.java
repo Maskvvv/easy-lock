@@ -1,6 +1,6 @@
 package com.example.lock;
 
-import com.easy.lock.core.LockProcessor;
+import com.easy.lock.core.support.LockProcessor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
