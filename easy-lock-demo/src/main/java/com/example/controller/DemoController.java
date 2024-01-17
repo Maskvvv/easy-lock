@@ -28,4 +28,18 @@ public class DemoController {
         String result = demoService.addUser(param, body);
         return result;
     }
+
+    @PostMapping("add_with_redisson")
+    private String addUserWithRedisson(DemoParam param, @RequestBody DemoBody body) {
+        String result = demoService.addUserWithRedisson(param, body);
+        return result;
+    }
+
+    @PostMapping("add_with_transactional")
+    private String addUserWithTransactional(DemoParam param, @RequestBody DemoBody body) {
+        String result = demoService.addUserWithTransactional(param, body);
+        return result;
+    }
+
+
 }
