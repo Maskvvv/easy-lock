@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>easy-lock-core</artifactId>
-    <version>${easy-lock-core.version}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>easy-lock-core</name>

@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>easy-lock-boot-starter</artifactId>
-    <version>${easy-lock-boot-starter.version}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>easy-lock-boot-starter</name>

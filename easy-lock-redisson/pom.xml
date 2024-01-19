@@ -8,14 +8,10 @@
     </parent>
 
     <artifactId>easy-lock-redisson</artifactId>
-    <version>${easy-lock-redisson.version}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>easy-lock-redisson</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
