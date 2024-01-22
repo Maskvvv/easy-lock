@@ -44,9 +44,9 @@
     </scm>
 
     <properties>
-        <easy-lock-core.version>1.0.0</easy-lock-core.version>
-        <easy-lock-boot-starter.version>1.0.0</easy-lock-boot-starter.version>
-        <easy-lock-redisson.version>1.0.0</easy-lock-redisson.version>
+        <easy-lock-core.version>1.0.1</easy-lock-core.version>
+        <easy-lock-boot-starter.version>1.0.1</easy-lock-boot-starter.version>
+        <easy-lock-redisson.version>1.0.1</easy-lock-redisson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.source>1.8</maven.compiler.source>

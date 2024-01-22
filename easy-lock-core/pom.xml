@@ -4,11 +4,11 @@
     <parent>
         <groupId>io.github.maskvvv</groupId>
         <artifactId>easy-lock</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <artifactId>easy-lock-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>easy-lock-core</name>
