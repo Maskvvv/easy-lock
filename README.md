@@ -12,7 +12,7 @@
 <dependency>
     <groupId>io.github.maskvvv</groupId>
     <artifactId>easy-lock-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -162,7 +162,7 @@ public class DemoLockProcessor implements LockProcessor {
 <dependency>
     <groupId>io.github.maskvvv</groupId>
     <artifactId>easy-lock-redisson</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
